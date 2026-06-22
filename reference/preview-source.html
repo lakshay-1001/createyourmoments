@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Template Preview - Moments</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=Playfair+Display:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                "secondary-fixed": "#fbdbde",
+                "on-error-container": "#93000a",
+                "on-secondary": "#ffffff",
+                "tertiary-fixed-dim": "#c5c5d8",
+                "secondary-fixed-dim": "#debfc2",
+                "on-secondary-fixed": "#281719",
+                "primary": "#685d4a",
+                "on-tertiary-fixed-variant": "#444655",
+                "on-primary-fixed": "#221b0b",
+                "surface-tint": "#685d4a",
+                "tertiary": "#5c5d6e",
+                "primary-fixed-dim": "#d3c5ad",
+                "surface-dim": "#dcd9d9",
+                "on-tertiary-container": "#666778",
+                "surface-container": "#f0eded",
+                "tertiary-container": "#e7e7fb",
+                "surface-container-low": "#f6f3f2",
+                "error-container": "#ffdad6",
+                "primary-fixed": "#f0e0c8",
+                "background": "#fcf9f8",
+                "surface-container-lowest": "#ffffff",
+                "secondary-container": "#f8d8db",
+                "on-tertiary": "#ffffff",
+                "primary-container": "#f7e7ce",
+                "on-secondary-fixed-variant": "#574144",
+                "tertiary-fixed": "#e1e1f5",
+                "inverse-primary": "#d3c5ad",
+                "on-primary-fixed-variant": "#4f4533",
+                "surface-container-high": "#eae7e7",
+                "on-surface-variant": "#4b463d",
+                "on-error": "#ffffff",
+                "outline": "#7d766c",
+                "on-primary": "#ffffff",
+                "on-surface": "#1c1b1b",
+                "inverse-surface": "#313030",
+                "on-tertiary-fixed": "#191b29",
+                "error": "#ba1a1a",
+                "on-primary-container": "#726753",
+                "surface-bright": "#fcf9f8",
+                "on-background": "#1c1b1b",
+                "outline-variant": "#cec5ba",
+                "surface": "#fcf9f8",
+                "surface-variant": "#e5e2e1",
+                "surface-container-highest": "#e5e2e1",
+                "on-secondary-container": "#755d5f",
+                "secondary": "#70585b",
+                "inverse-on-surface": "#f3f0ef"
+            },
+            "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+            },
+            "spacing": {
+                "gutter": "24px",
+                "margin-desktop": "64px",
+                "container-max": "1280px",
+                "unit": "8px",
+                "margin-mobile": "20px"
+            },
+            "fontFamily": {
+                "body-md": ["Inter"],
+                "label-caps": ["Inter"],
+                "display-lg-mobile": ["Playfair Display"],
+                "display-lg": ["Playfair Display"],
+                "body-lg": ["Inter"],
+                "headline-md": ["Playfair Display"]
+            },
+            "fontSize": {
+                "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "600"}],
+                "display-lg-mobile": ["40px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                "display-lg": ["64px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                "body-lg": ["18px", {"lineHeight": "1.6", "letterSpacing": "-0.01em", "fontWeight": "400"}],
+                "headline-md": ["32px", {"lineHeight": "1.3", "fontWeight": "600"}]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+        
+        .ambient-shadow {
+            box-shadow: 0 40px 40px -15px rgba(92, 93, 110, 0.06);
+        }
+
+        .preview-transition {
+            transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1), height 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .fade-slide-up {
+            animation: fadeSlideUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+
+        @keyframes fadeSlideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .stagger-1 { animation-delay: 0.1s; }
+        .stagger-2 { animation-delay: 0.2s; }
+        .stagger-3 { animation-delay: 0.3s; }
+
+        .device-active {
+            @apply bg-primary text-on-primary shadow-lg;
+        }
+        
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cec5ba;
+            border-radius: 10px;
+        }
+
+        .floating {
+            animation: float 4s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md overflow-hidden h-screen flex flex-col">
+<!-- Top Navigation (Shell Implementation) -->
+<header class="fixed top-0 w-full z-50 bg-surface/70 backdrop-blur-xl border-b border-white/40 shadow-[0_40px_40px_-15px_rgba(92,93,110,0.06)] h-20 flex justify-between items-center px-margin-desktop">
+<div class="flex items-center gap-12">
+<span class="font-headline-md text-headline-md font-bold text-primary">Moments</span>
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md text-body-md" href="#">Gallery</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md text-body-md" href="#">Pricing</a>
+<a class="text-primary font-bold border-b-2 border-primary font-body-md text-body-md" href="#">Dashboard</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex bg-surface-container-high p-1 rounded-full border border-outline-variant/30">
+<button class="p-2 rounded-full flex items-center justify-center transition-all device-active" id="btn-desktop" onclick="changeViewport('desktop')">
+<span class="material-symbols-outlined text-[20px]">desktop_windows</span>
+</button>
+<button class="p-2 rounded-full flex items-center justify-center transition-all text-on-surface-variant hover:bg-surface-container" id="btn-tablet" onclick="changeViewport('tablet')">
+<span class="material-symbols-outlined text-[20px]">tablet</span>
+</button>
+<button class="p-2 rounded-full flex items-center justify-center transition-all text-on-surface-variant hover:bg-surface-container" id="btn-mobile" onclick="changeViewport('mobile')">
+<span class="material-symbols-outlined text-[20px]">smartphone</span>
+</button>
+</div>
+<button class="px-6 py-2 bg-primary text-on-primary rounded-full font-label-caps text-label-caps hover:scale-105 active:scale-95 transition-all">
+                Login
+            </button>
+</div>
+</header>
+<!-- Main Workspace -->
+<main class="flex-grow flex pt-20 overflow-hidden">
+<!-- Preview Canvas -->
+<section class="flex-grow bg-surface-container-low flex items-center justify-center p-8 overflow-hidden relative">
+<!-- Decorative Blobs -->
+<div class="absolute top-10 left-10 w-64 h-64 bg-tertiary-container/30 blur-[100px] rounded-full floating"></div>
+<div class="absolute bottom-10 right-10 w-96 h-96 bg-secondary-container/30 blur-[120px] rounded-full floating" style="animation-delay: -2s"></div>
+<div class="preview-transition bg-white shadow-2xl rounded-xl overflow-hidden border border-white/40 flex flex-col w-full h-full max-w-5xl" id="preview-container">
+<!-- Inner Preview Header -->
+<div class="h-12 bg-surface-container flex items-center px-4 justify-between shrink-0">
+<div class="flex gap-1.5">
+<div class="w-3 h-3 rounded-full bg-error/20"></div>
+<div class="w-3 h-3 rounded-full bg-primary/20"></div>
+<div class="w-3 h-3 rounded-full bg-tertiary/20"></div>
+</div>
+<div class="text-[11px] font-label-caps text-on-surface-variant/60 bg-surface px-4 py-1 rounded-full border border-outline-variant/20">
+                        moments.app/v/ethereal-gala
+                    </div>
+<div class="w-10"></div>
+</div>
+<!-- Actual Template Preview Content -->
+<div class="flex-grow overflow-y-auto bg-white" id="preview-frame">
+<div class="relative h-[400px]">
+<div class="absolute inset-0 bg-cover bg-center" data-alt="A cinematic, high-key photograph of a luxury outdoor garden wedding reception. The scene features crystal chandeliers hanging from ancient oak trees at dusk, with soft golden hour lighting casting a warm glow over elegantly set white tables and champagne-colored floral arrangements. The aesthetic is sophisticated, ethereal, and minimalist, with a shallow depth of field focusing on the exquisite table details." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA3neCY8w-u2OpRZRG1kvLWq47kbgu9V_0EckmVsjkgWXZyeGHFRSVmfWQTwUSx-L64N7Xd2LEQHQQ4vZu275bb9TzJIQ-r3ezTu8PkoulO232Vv1AE2EPILurr7EcFC6eP9NCPHc0aAMvGCPN-1IeYJmNXH8LVwqOWMVT64sRDEohXnvlriSNpzHmpIMPm2IftT-0pmGEywcx-Y1RtHRZcAY51jV_oZxldtcmjZJfIobYleJC1fagiJFklxS62YH0i9onxb1Navvs')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent"></div>
+<div class="absolute bottom-8 left-8 right-8 text-center">
+<span class="font-label-caps text-label-caps tracking-widest text-primary mb-4 block">OCTOBER 12, 2024</span>
+<h1 class="font-display-lg text-display-lg text-on-surface leading-none mb-2">The Ethereal Gala</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-xl mx-auto italic">A celebration of timeless love and shared dreams under the starlit canopy.</p>
+</div>
+</div>
+<div class="p-16 grid grid-cols-1 md:grid-cols-2 gap-12 max-w-4xl mx-auto">
+<div class="space-y-6">
+<h2 class="font-headline-md text-headline-md text-primary">Our Story</h2>
+<p class="text-on-surface-variant leading-relaxed">Inspired by the soft hues of a Mediterranean sunset, this moment was curated to bring together those who matter most in a space that feels like a living poem. From the hand-pressed stationery to the curated ambient playlist, every detail whispered elegance.</p>
+<button class="border border-outline-variant px-8 py-3 rounded-full font-label-caps text-label-caps hover:bg-surface-container transition-colors">RSVP DETAILS</button>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="aspect-[3/4] rounded-2xl overflow-hidden shadow-lg">
+<img class="w-full h-full object-cover" data-alt="Close-up detail of a minimalist wedding invitation made of heavy cream-colored cardstock with gold leaf edges. The typography is elegant and spacious. It rests on a textured linen surface with a single dried sprig of lavender beside it, bathed in soft side-lighting from a nearby window." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDL7pyXQ5wzfZJAqqwn31TdyR3S1GNF4-YU6L8VSN8JkXR0mM0az_JSbQBSfEJfDYLvo9gBZZWgy3INI2txTU9zUewpnmeh_4L1G6ZrJXEpBWYy6b7yBxGCJaU7nf_cv01A3cLqc7hs4VzCX05O5JdKNIb7n9e7mtbp6cX9uRTN47jrhVGGgBktYfmwi4n-Efd_vgkCpbhJJ0IS8LUgJmYrP6Zc1MuEjTCx_opOGEKAmdMOQT-4UqdA5ivE98n7jfF6E3hbZt_dJmw"/>
+</div>
+<div class="aspect-[3/4] rounded-2xl overflow-hidden shadow-lg mt-8">
+<img class="w-full h-full object-cover" data-alt="A minimalist table setting at a luxury event, featuring a single translucent glass plate on a white linen tablecloth. A delicate sprig of olive leaf lies across a fine-weave napkin. The background is softly blurred, showing the bokeh of distant candle flames in a sophisticated, calm color palette." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCb3UprAJ7EnNpn13tDBtZzX7vijel-Bmw1Utm0zTcq1N2Zc_HjzdKZSSthITpz7BiqPbqyM5VgvNic-C92FYH-Mn8K70edB2kkNkSc1mAk6nXn9KpOb6tq6VvVl4aK9fpgpkBFo_xIs60RzQKwz9kzG2ZcEutTDW6Hz21QWkdrEMBV681fd35Ibi5Llh77WFCp5GIg4cEsguhdzI2KzujlS1O4zzSkoPgLx1gc3TSaohiW4s3SRucp3fzO-q8VzvtPHROTASREFbM"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Sidebar Details -->
+<aside class="w-[400px] bg-surface-container-low border-l border-outline-variant/20 p-margin-desktop overflow-y-auto flex flex-col">
+<div class="fade-slide-up">
+<span class="font-label-caps text-label-caps text-tertiary mb-2 block">TEMPLATE 042</span>
+<h2 class="font-headline-md text-headline-md text-on-surface mb-4">Ethereal Gala</h2>
+<p class="text-on-surface-variant mb-8 font-body-md">A sophisticated, glassmorphic layout designed for high-end weddings and milestone celebrations. Focuses on imagery and editorial pacing.</p>
+</div>
+<div class="space-y-8 fade-slide-up stagger-1">
+<div>
+<h3 class="font-label-caps text-label-caps text-on-surface mb-4">INCLUDED FEATURES</h3>
+<ul class="space-y-4">
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-[20px]">check_circle</span>
+<span class="text-on-surface-variant font-body-md">Interactive RSVP Manager</span>
+</li>
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-[20px]">check_circle</span>
+<span class="text-on-surface-variant font-body-md">High-Res Image Gallery</span>
+</li>
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-[20px]">check_circle</span>
+<span class="text-on-surface-variant font-body-md">Gift Registry Integration</span>
+</li>
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-[20px]">check_circle</span>
+<span class="text-on-surface-variant font-body-md">Custom Particle Effects</span>
+</li>
+</ul>
+</div>
+<div>
+<h3 class="font-label-caps text-label-caps text-on-surface mb-4">COLOR PALETTE</h3>
+<div class="flex gap-3">
+<div class="w-10 h-10 rounded-full border border-outline-variant/30 bg-[#fcf9f8]" title="Pristine"></div>
+<div class="w-10 h-10 rounded-full border border-outline-variant/30 bg-[#685d4a]" title="Antique Gold"></div>
+<div class="w-10 h-10 rounded-full border border-outline-variant/30 bg-[#cec5ba]" title="Warm Stone"></div>
+<div class="w-10 h-10 rounded-full border border-outline-variant/30 bg-[#e7e7fb]" title="Lavender Dusk"></div>
+</div>
+</div>
+<div class="pt-8">
+<button class="w-full py-4 border border-primary text-primary rounded-xl font-label-caps text-label-caps hover:bg-primary-container transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">open_in_new</span>
+                        LIVE DEMO
+                    </button>
+</div>
+</div>
+<div class="mt-auto pt-12 fade-slide-up stagger-2">
+<div class="bg-surface-container-high rounded-2xl p-6 border border-white/40">
+<div class="flex items-center gap-4 mb-3">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container">
+<span class="material-symbols-outlined">auto_awesome</span>
+</div>
+<span class="font-body-md font-bold text-on-surface">Pro Recommendation</span>
+</div>
+<p class="text-[14px] text-on-surface-variant leading-relaxed">Perfect for evening events with professional photography. Works best with minimalist typography.</p>
+</div>
+</div>
+</aside>
+</main>
+<!-- Sticky Bottom CTA -->
+<footer class="h-24 bg-surface/80 backdrop-blur-xl border-t border-white/40 z-50 flex items-center justify-between px-margin-desktop ambient-shadow">
+<div class="flex items-center gap-8">
+<div>
+<span class="text-[12px] text-on-surface-variant font-label-caps block mb-0.5">ESTIMATED SETUP TIME</span>
+<span class="text-on-surface font-bold">15 - 20 Minutes</span>
+</div>
+<div class="w-px h-10 bg-outline-variant/30"></div>
+<div>
+<span class="text-[12px] text-on-surface-variant font-label-caps block mb-0.5">COMPATIBILITY</span>
+<span class="text-on-surface font-bold">All Screen Sizes</span>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="text-right">
+<span class="text-[12px] text-on-surface-variant font-label-caps block mb-0.5">FREE FOR PREMIUM</span>
+<span class="text-primary font-bold text-lg">$24.00 One-time</span>
+</div>
+<button class="px-12 py-4 bg-primary text-on-primary rounded-full font-label-caps text-label-caps shadow-xl hover:scale-[1.03] active:scale-95 transition-all flex items-center gap-3">
+                USE THIS TEMPLATE
+                <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</footer>
+<script>
+        function changeViewport(mode) {
+            const container = document.getElementById('preview-container');
+            const btns = {
+                desktop: document.getElementById('btn-desktop'),
+                tablet: document.getElementById('btn-tablet'),
+                mobile: document.getElementById('btn-mobile')
+            };
+
+            // Reset buttons
+            Object.values(btns).forEach(btn => {
+                btn.classList.remove('device-active');
+                btn.classList.add('text-on-surface-variant', 'hover:bg-surface-container');
+            });
+
+            // Set active button
+            btns[mode].classList.add('device-active');
+            btns[mode].classList.remove('text-on-surface-variant', 'hover:bg-surface-container');
+
+            // Adjust container size
+            if (mode === 'mobile') {
+                container.style.width = '375px';
+                container.style.height = '667px';
+                container.style.maxWidth = '375px';
+            } else if (mode === 'tablet') {
+                container.style.width = '768px';
+                container.style.height = '90%';
+                container.style.maxWidth = '768px';
+            } else {
+                container.style.width = '100%';
+                container.style.height = '100%';
+                container.style.maxWidth = '1024px';
+            }
+        }
+
+        // Initialize state
+        window.addEventListener('load', () => {
+            // Apply any initial animations or state
+        });
+    </script>
+</body></html>

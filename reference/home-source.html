@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Moments | Turn Moments Into Memories</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=Playfair+Display:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "secondary-fixed": "#fbdbde",
+                    "on-error-container": "#93000a",
+                    "on-secondary": "#ffffff",
+                    "tertiary-fixed-dim": "#c5c5d8",
+                    "secondary-fixed-dim": "#debfc2",
+                    "on-secondary-fixed": "#281719",
+                    "primary": "#685d4a",
+                    "on-tertiary-fixed-variant": "#444655",
+                    "on-primary-fixed": "#221b0b",
+                    "surface-tint": "#685d4a",
+                    "tertiary": "#5c5d6e",
+                    "primary-fixed-dim": "#d3c5ad",
+                    "surface-dim": "#dcd9d9",
+                    "on-tertiary-container": "#666778",
+                    "surface-container": "#f0eded",
+                    "tertiary-container": "#e7e7fb",
+                    "surface-container-low": "#f6f3f2",
+                    "error-container": "#ffdad6",
+                    "primary-fixed": "#f0e0c8",
+                    "background": "#fcf9f8",
+                    "surface-container-lowest": "#ffffff",
+                    "secondary-container": "#f8d8db",
+                    "on-tertiary": "#ffffff",
+                    "primary-container": "#f7e7ce",
+                    "on-secondary-fixed-variant": "#574144",
+                    "tertiary-fixed": "#e1e1f5",
+                    "inverse-primary": "#d3c5ad",
+                    "on-primary-fixed-variant": "#4f4533",
+                    "surface-container-high": "#eae7e7",
+                    "on-surface-variant": "#4b463d",
+                    "on-error": "#ffffff",
+                    "outline": "#7d766c",
+                    "on-primary": "#ffffff",
+                    "on-surface": "#1c1b1b",
+                    "inverse-surface": "#313030",
+                    "on-tertiary-fixed": "#191b29",
+                    "error": "#ba1a1a",
+                    "on-primary-container": "#726753",
+                    "surface-bright": "#fcf9f8",
+                    "on-background": "#1c1b1b",
+                    "outline-variant": "#cec5ba",
+                    "surface": "#fcf9f8",
+                    "surface-variant": "#e5e2e1",
+                    "surface-container-highest": "#e5e2e1",
+                    "on-secondary-container": "#755d5f",
+                    "secondary": "#70585b",
+                    "inverse-on-surface": "#f3f0ef"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gutter": "24px",
+                    "margin-desktop": "64px",
+                    "container-max": "1280px",
+                    "unit": "8px",
+                    "margin-mobile": "20px"
+            },
+            "fontFamily": {
+                    "body-md": ["Inter"],
+                    "label-caps": ["Inter"],
+                    "display-lg-mobile": ["Playfair Display"],
+                    "display-lg": ["Playfair Display"],
+                    "body-lg": ["Inter"],
+                    "headline-md": ["Playfair Display"]
+            },
+            "fontSize": {
+                    "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "600"}],
+                    "display-lg-mobile": ["40px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "display-lg": ["64px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "letterSpacing": "-0.01em", "fontWeight": "400"}],
+                    "headline-md": ["32px", {"lineHeight": "1.3", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+        
+        .ambient-glow {
+            box-shadow: 0 40px 40px -15px rgba(92, 93, 110, 0.06);
+        }
+
+        .reveal-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .reveal-up.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .floating {
+            animation: float 4s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .accent-gradient {
+            background: linear-gradient(135deg, #685d4a 0%, #70585b 100%);
+        }
+
+        .stagger-delay-1 { transition-delay: 0.1s; }
+        .stagger-delay-2 { transition-delay: 0.2s; }
+        .stagger-delay-3 { transition-delay: 0.3s; }
+        .stagger-delay-4 { transition-delay: 0.4s; }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-surface/70 backdrop-blur-xl border-b border-white/40 shadow-[0_40px_40px_-15px_rgba(92,93,110,0.06)] h-20">
+<div class="flex justify-between items-center max-w-container-max mx-auto px-margin-desktop h-full">
+<a class="font-headline-md text-headline-md font-bold text-primary" href="#">Moments</a>
+<div class="hidden md:flex items-center gap-10">
+<a class="font-body-md text-body-md text-primary font-bold border-b-2 border-primary transition-colors duration-300" href="#">Gallery</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors duration-300" href="#">Pricing</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors duration-300" href="#">Dashboard</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="hidden md:block px-6 py-2 text-on-surface-variant font-medium hover:text-primary transition-all">Login</button>
+<button class="accent-gradient text-white px-8 py-3 rounded-full font-medium shadow-lg hover:scale-105 active:scale-95 transition-all">Create Moment</button>
+</div>
+</div>
+</nav>
+<!-- Hero Section -->
+<section class="relative pt-40 pb-20 overflow-hidden">
+
+<div class="max-w-container-max mx-auto px-margin-desktop relative z-10 flex flex-col items-center text-center">
+<span class="font-label-caps text-label-caps text-primary mb-6 tracking-widest reveal-up active">CELEBRATE EVERY CHAPTER</span>
+<h1 class="font-display-lg text-display-lg-mobile md:text-display-lg mb-8 leading-tight reveal-up active stagger-delay-1">
+                Turn Moments <br/><span class="italic font-serif">Into Memories</span>
+</h1>
+<p class="max-w-2xl font-body-lg text-body-lg text-on-surface-variant mb-12 reveal-up active stagger-delay-2">
+                A premium, glassmorphic space to curate, design, and share life's most meaningful celebrations. From intimate anniversaries to grand weddings.
+            </p>
+<div class="flex flex-col sm:flex-row gap-6 mb-24 reveal-up active stagger-delay-3">
+<button class="accent-gradient text-white px-10 py-4 rounded-full font-semibold text-lg shadow-xl hover:scale-105 active:scale-95 transition-all">Start Designing</button>
+<button class="glass-panel text-on-surface px-10 py-4 rounded-full font-semibold text-lg shadow-sm hover:bg-white/90 transition-all">View Showcase</button>
+</div>
+<!-- Hero Interactive Mockups -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8 w-full reveal-up active stagger-delay-4">
+<div class="group relative aspect-[4/5] rounded-3xl overflow-hidden glass-panel floating" style="animation-delay: 0s;">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="A luxurious, minimalist digital invitation layout for a wedding, featuring elegant serif typography, soft cream and gold accents, and a blurred background of a sun-drenched vineyard. The design is clean, sophisticated, and evokes a high-end editorial feel typical of a luxury wedding magazine." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDvdGoQgmTjkdc3Qb4vxV90aC4_DdfMI-Ml1pHI9O3JP-__j7fQt_FcuIhs5lQBSZRQA8Hhvm2MUcYWfXkifAvDnHsbjU1nV6qeaF056J66lK6V55_8nQMEimwhuVt2mWWJkW3E6xEgQdqZoskKCnWi9N2J6EQn-WHnlBnXkfZtVOOBlKF6Km5GfH2nnIw0bU4IlCUol2HDkyK0M_O2WDI1Wuny2RGP9zX-Aqoa0xQ494Pis2L5h0nUh-TziaeM-SlWD-_OLaDB-uI"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex flex-col justify-end p-8 text-left">
+<span class="text-white/80 font-label-caps text-xs mb-2">WEDDING EDITION</span>
+<h3 class="text-white font-headline-md text-2xl">The Riviera Gala</h3>
+</div>
+</div>
+<div class="group relative aspect-[4/5] rounded-3xl overflow-hidden glass-panel floating" style="animation-delay: -1s;">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="A modern and vibrant digital celebration page for a 30th birthday party. The design uses a palette of soft lavender and deep charcoal, with elegant glassmorphic cards displaying event details. High-key lighting and a sense of digital calm define the visual aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCotZ1LHqyCK90M4KLXOzeaZRooBrT-UN67KIF0U40P06AdvNsD0K2do_T3e53Q_OmN9nnkjEC0s_tgSayVfeyNTny2FX9MCRFuOfTYRalhUpBR3Vws5x5tQdxB2zYScDiJ-YbRfJPQRMogSuQel8m7YNnfGVoxZHVQSZtLeDDkPMxn3FEGABPI7LeCLYn2DMNVl4nTj6GKRBCPeHSWK51w7RrO6rFi7rPee1rnuo6qKeYCLbtX7oL02yc6Hf7qBsCOMEeuGeQ0Odk"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex flex-col justify-end p-8 text-left">
+<span class="text-white/80 font-label-caps text-xs mb-2">BIRTHDAY SERIES</span>
+<h3 class="text-white font-headline-md text-2xl">Luna's 30th</h3>
+</div>
+</div>
+<div class="group relative aspect-[4/5] rounded-3xl overflow-hidden glass-panel floating" style="animation-delay: -2s;">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="A romantic and serene anniversary celebration digital space. The visual style is ethereal with soft-focus floral elements, a minimalist layout, and warm, golden hour lighting. The typography is a mix of delicate scripts and clean sans-serifs, creating a timeless and exclusive atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBRRk2dOCpsk2GKPGbLsULi23nOUTyxcwIpUWeIrTyeILOeHpUYLr6HGBwJisL_G7vgRXvNIgyvSoFoNfCM4_T1mrqqCZUq0-TqJ56iOXUszpA6i22OJes4AYeXk3gYR_WpaA5I3yxgae5ER4yT5fILuhjhD8ePE9D63JrNAHQ73QfOtibL6yeoqOJR9AvarydA82jc9BIQk5RpTcvT1f1KV8JhVT7vsXOIGj5PPOGYxJawCJ7MpY3F8WFrXckNKAEpAystqzjl9v0"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex flex-col justify-end p-8 text-left">
+<span class="text-white/80 font-label-caps text-xs mb-2">ANNIVERSARY SUITE</span>
+<h3 class="text-white font-headline-md text-2xl">Golden Decade</h3>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- How It Works -->
+<section class="py-32 bg-surface-container-low">
+<div class="max-w-container-max mx-auto px-margin-desktop">
+<div class="text-center mb-20">
+<h2 class="font-headline-md text-headline-md mb-4 text-on-surface">The Creation Journey</h2>
+<p class="text-on-surface-variant">Simple, sophisticated, and seamless.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-16 relative">
+<!-- Connector lines for desktop -->
+<div class="hidden md:block absolute top-1/3 left-0 w-full h-[1px] bg-outline-variant/30 -z-10"></div>
+<div class="flex flex-col items-center text-center reveal-up">
+<div class="w-20 h-20 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center mb-8 shadow-inner">
+<span class="material-symbols-outlined text-4xl">auto_awesome</span>
+</div>
+<h4 class="font-headline-md text-xl mb-4">Choose Concept</h4>
+<p class="text-on-surface-variant font-body-md">Select from our curated gallery of premium, artist-designed templates.</p>
+</div>
+<div class="flex flex-col items-center text-center reveal-up stagger-delay-1">
+<div class="w-20 h-20 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center mb-8 shadow-inner">
+<span class="material-symbols-outlined text-4xl">palette</span>
+</div>
+<h4 class="font-headline-md text-xl mb-4">Curate Details</h4>
+<p class="text-on-surface-variant font-body-md">Personalize with high-res imagery, custom itineraries, and glassmorphic widgets.</p>
+</div>
+<div class="flex flex-col items-center text-center reveal-up stagger-delay-2">
+<div class="w-20 h-20 rounded-full bg-tertiary-container text-on-tertiary-container flex items-center justify-center mb-8 shadow-inner">
+<span class="material-symbols-outlined text-4xl">ios_share</span>
+</div>
+<h4 class="font-headline-md text-xl mb-4">Invite &amp; Celebrate</h4>
+<p class="text-on-surface-variant font-body-md">Share your digital masterpiece with a private, secure link for your guests.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Bento Grid Featured Templates -->
+<section class="py-32">
+<div class="max-w-container-max mx-auto px-margin-desktop">
+<div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
+<div>
+<h2 class="font-headline-md text-headline-md mb-4">Signature Templates</h2>
+<p class="text-on-surface-variant max-w-lg">Designed by world-class event planners and UI specialists to ensure your digital space is as elegant as your physical one.</p>
+</div>
+<button class="px-8 py-3 border border-outline rounded-full text-on-surface hover:bg-surface-container transition-all">Explore All Designs</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 grid-rows-2 gap-8 h-[800px]">
+<div class="md:col-span-8 md:row-span-2 relative rounded-3xl overflow-hidden glass-panel reveal-up group">
+<img class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" data-alt="A high-end, editorial-style wedding digital album layout. The central image is a black and white portrait of a couple, surrounded by minimalist white space, thin gold borders, and delicate serif text. The mood is timeless, romantic, and highly exclusive, resembling a layout from a premium lifestyle magazine." src="https://lh3.googleusercontent.com/aida-public/AB6AXuACQpvQHdcB_ORjy6TIRWR7LiVJ3KDzIyedisSIQuTLkkGIQ8I0Fn-4TzqU6Bx-hV09Aq02SOgja2hlyazEpmVqrk8v_pwkkompob3PTai9vM2aSizDae61Lza0NREED9NvwFoTmqbdg752ZXdVDpOLgFbK8U7UqUqu2DH2ypQAU4a46E4yYyisRWgaHeB0W0ssp7gD3pcmf9KtMAtg3N0XpxA7C0gs5YvLPX2GqY_fsl0E4MPn0Z4zVT-7siD1epqAtb69W3qpI0o"/>
+<div class="absolute bottom-0 left-0 w-full p-12 bg-gradient-to-t from-black/80 to-transparent">
+<h3 class="text-white font-headline-md text-3xl mb-2">The Eternity Collection</h3>
+<p class="text-white/70 max-w-md">Our most popular wedding suite featuring smooth transitions and emotional storytelling.</p>
+</div>
+</div>
+<div class="md:col-span-4 md:row-span-1 relative rounded-3xl overflow-hidden glass-panel reveal-up stagger-delay-1 group">
+<img class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" data-alt="A sleek and modern corporate anniversary celebration design. The aesthetic is clean and professional, featuring a deep navy and charcoal palette with silver accents. Geometric patterns and glassmorphic charts showcase the company's journey and achievements in a sophisticated, tech-forward style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDxFkqXcn5KKx8o3KoRW3NMTF6U-UkIR-FagJiwZ84tIFO_ABNuLaR5_xrPh7TGC6YI-yR6PxuHD7v5oVHugw7sCGixhU5nmLE0v_vgbIb9GHUzIakPf70DJvDLUVbXaCdk3WHReWTAbRIIP1LSOAlnT29Sy-OxPVIBpcSTnCKALk3lAdBVWeGCDNFU32N0O2ipEMloB-CyTISY0T8XJS6_j1tbGHHLuGJFQVORqYj_G7QszbA3c6pBJ0q_JxC-HPumtmpOU1R0pA8"/>
+<div class="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="bg-white text-black px-6 py-2 rounded-full font-bold">Preview</button>
+</div>
+</div>
+<div class="md:col-span-4 md:row-span-1 relative rounded-3xl overflow-hidden glass-panel reveal-up stagger-delay-2 group">
+<img class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" data-alt="A whimsical and soft celebration page for a baby shower or child's first birthday. The design uses pastel tones of mint, peach, and lavender with delicate floating cloud animations and soft-focus photography. The atmosphere is joyous, gentle, and digitally serene." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCCWNOE1E3DfaDM4CDKpsSQhoCI1MFwJvnOy1dRKGVbobyzThWXz4KxdJpRrnoTXNAeFzIM2d2Ab360yyC4a66qIeQSVQmPDREXiFujM4l2Naxn6dI7LtE7buKUrn6hNKkciz89GvbD_ukG--DGiPsAwpbA-2kDbQKzQO8oXEJwsGovLMAAisuga7UKoidAbW_9-HU3VYVoUVwI30b5g6Y9RafZf1QcUampfzQy__wI6z1bmqiQyIEx37ylOjex5HbWhRXuVXxeYUw"/>
+<div class="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="bg-white text-black px-6 py-2 rounded-full font-bold">Preview</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Statistics -->
+<section class="py-24 bg-primary-container/30 relative overflow-hidden">
+
+<div class="max-w-container-max mx-auto px-margin-desktop relative z-10">
+<div class="grid grid-cols-2 md:grid-cols-4 gap-12 text-center">
+<div class="reveal-up">
+<div class="font-display-lg text-4xl md:text-5xl text-primary font-bold mb-2">1.2M+</div>
+<div class="font-label-caps text-on-surface-variant">Moments Shared</div>
+</div>
+<div class="reveal-up stagger-delay-1">
+<div class="font-display-lg text-4xl md:text-5xl text-primary font-bold mb-2">98%</div>
+<div class="font-label-caps text-on-surface-variant">Guest Engagement</div>
+</div>
+<div class="reveal-up stagger-delay-2">
+<div class="font-display-lg text-4xl md:text-5xl text-primary font-bold mb-2">45k</div>
+<div class="font-label-caps text-on-surface-variant">Premium Designs</div>
+</div>
+<div class="reveal-up stagger-delay-3">
+<div class="font-display-lg text-4xl md:text-5xl text-primary font-bold mb-2">200+</div>
+<div class="font-label-caps text-on-surface-variant">Countries Reached</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Testimonials -->
+<section class="py-32">
+<div class="max-w-container-max mx-auto px-margin-desktop">
+<div class="text-center mb-16">
+<h2 class="font-headline-md text-headline-md">Cherished Voices</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div class="glass-panel p-10 rounded-[2rem] reveal-up">
+<div class="flex gap-1 text-primary mb-6">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<p class="text-xl italic font-serif text-on-surface mb-8">"Moments allowed us to create a digital legacy for our wedding. Our international guests felt like they were there months before the flight."</p>
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full overflow-hidden bg-surface-variant">
+<img class="w-full h-full object-cover" data-alt="A portrait of an elegant woman in her late 20s with a warm, genuine smile. She is shot in soft, natural daylight with a shallow depth of field, giving her a professional yet approachable look. The background is a clean, minimalist interior." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBtNVdzEJ3NJRBkoUaR9rCzcg7UkkkGd2k1FepQgA4jeGp21wrgLuzZ6eIOnsgs2IsBlI2s8vhxKwr2IF25PzeOKj-yv6AQAaZ6W9493EycMOH2FjJnU5OMHexCi41GAy1psf0NWeTQW8DsGCvw0hHkDkpkGe4KI-NHoXo-A73TNgIM6-Vd1kmtZ9WT0RCk3gfpTZJUnf444XdIFFHva_ZojvhHHbPNsbJ9gWKP-BpM09iI28Ixat6CWIQMCEUa8dFCGptQSObjWD0"/>
+</div>
+<div>
+<div class="font-bold">Eleanor Vance</div>
+<div class="text-sm text-on-surface-variant">Creative Director</div>
+</div>
+</div>
+</div>
+<div class="glass-panel p-10 rounded-[2rem] reveal-up stagger-delay-1">
+<div class="flex gap-1 text-primary mb-6">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<p class="text-xl italic font-serif text-on-surface mb-8">"The attention to detail in the typography and layout is unmatched. It’s the only platform that feels like a luxury experience from start to finish."</p>
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full overflow-hidden bg-surface-variant">
+<img class="w-full h-full object-cover" data-alt="A professional man in his 30s looking thoughtfully off-camera. He is styled in a minimalist aesthetic with neutral colors. The photography is clean, crisp, and high-quality, set in a bright modern studio." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCK8LcLHiuhrQSevaXRrwqU1jDXC9ZfQxJY1l03zvCjAxbKcvnziNBHUsZkephiea7VjBxg8ufC_sMrQvNDipqNHwadjzt-GVNCIB4N0MtCdIzSaKu_Y-1ZvahznVFba29MNzneDqGQi_3PjP-O6kG2YQ9lgvTCZWifpr0L55XOvQJi2SM-kdEMzktMuKdrUnbzv8DH7p_YY5BibgWKrEpkDLYC00gt88EjmFEbbfD9HggOp3iTZ5V3HKVk-lQBiEQ9rN4BlCQwbMA"/>
+</div>
+<div>
+<div class="font-bold">Marcus Thorne</div>
+<div class="text-sm text-on-surface-variant">Tech Entrepreneur</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Pricing Teaser -->
+<section class="py-32 bg-surface-container-highest">
+<div class="max-w-container-max mx-auto px-margin-desktop text-center">
+<h2 class="font-headline-md text-headline-md mb-12">Craft Your Legacy</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+<div class="glass-panel p-12 rounded-3xl reveal-up">
+<h3 class="font-bold text-xl mb-2">Essential</h3>
+<div class="text-4xl font-bold mb-6">$49<span class="text-base font-normal text-on-surface-variant">/event</span></div>
+<ul class="space-y-4 mb-8 text-on-surface-variant text-left">
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-sm">check_circle</span> 5 Standard Templates</li>
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-sm">check_circle</span> Basic Gallery</li>
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-sm">check_circle</span> Unlimited Guests</li>
+</ul>
+<button class="w-full py-3 rounded-full border border-primary text-primary font-bold hover:bg-primary/5 transition-all">Select Basic</button>
+</div>
+<div class="accent-gradient p-1 rounded-3xl shadow-2xl reveal-up stagger-delay-1 scale-105 relative z-20">
+<div class="bg-surface p-12 rounded-[calc(1.5rem-4px)]">
+<span class="bg-primary text-white text-[10px] font-bold px-3 py-1 rounded-full absolute -top-3 left-1/2 -translate-x-1/2">MOST POPULAR</span>
+<h3 class="font-bold text-xl mb-2">Premium</h3>
+<div class="text-4xl font-bold mb-6">$129<span class="text-base font-normal text-on-surface-variant">/event</span></div>
+<ul class="space-y-4 mb-8 text-on-surface-variant text-left">
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-sm">check_circle</span> All Templates &amp; Layouts</li>
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-sm">check_circle</span> 4K Video Backgrounds</li>
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-sm">check_circle</span> Custom Domain Support</li>
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-sm">check_circle</span> White-label Branding</li>
+</ul>
+<button class="w-full py-4 rounded-full accent-gradient text-white font-bold shadow-lg hover:opacity-90 transition-all">Get Unlimited Access</button>
+</div>
+</div>
+<div class="glass-panel p-12 rounded-3xl reveal-up stagger-delay-2">
+<h3 class="font-bold text-xl mb-2">Bespoke</h3>
+<div class="text-4xl font-bold mb-6">Custom</div>
+<ul class="space-y-4 mb-8 text-on-surface-variant text-left">
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-sm">check_circle</span> Custom Designer Interaction</li>
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-sm">check_circle</span> Personalized Animations</li>
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-sm">check_circle</span> Priority White-Glove Support</li>
+</ul>
+<button class="w-full py-3 rounded-full border border-primary text-primary font-bold hover:bg-primary/5 transition-all">Contact Us</button>
+</div>
+</div>
+</div>
+</section>
+<!-- FAQ -->
+<section class="py-32">
+<div class="max-w-3xl mx-auto px-margin-mobile md:px-0">
+<h2 class="font-headline-md text-headline-md mb-12 text-center">Frequently Asked</h2>
+<div class="space-y-4">
+<details class="group glass-panel rounded-2xl overflow-hidden reveal-up">
+<summary class="flex justify-between items-center p-6 cursor-pointer list-none">
+<span class="font-bold">How long does my Moment page stay online?</span>
+<span class="material-symbols-outlined transition-transform group-open:rotate-180">expand_more</span>
+</summary>
+<div class="p-6 pt-0 text-on-surface-variant">
+                        Our Essential plan hosts your page for 1 year, while Premium and Bespoke plans offer permanent archival options so your memories stay digital forever.
+                    </div>
+</details>
+<details class="group glass-panel rounded-2xl overflow-hidden reveal-up stagger-delay-1">
+<summary class="flex justify-between items-center p-6 cursor-pointer list-none">
+<span class="font-bold">Can I export my moment into a physical book?</span>
+<span class="material-symbols-outlined transition-transform group-open:rotate-180">expand_more</span>
+</summary>
+<div class="p-6 pt-0 text-on-surface-variant">
+                        Yes! Our Premium tier includes a one-click "Export to Print" feature that intelligently layouts your digital celebration into a high-end hardcover coffee table book.
+                    </div>
+</details>
+<details class="group glass-panel rounded-2xl overflow-hidden reveal-up stagger-delay-2">
+<summary class="flex justify-between items-center p-6 cursor-pointer list-none">
+<span class="font-bold">Is the RSVP system included?</span>
+<span class="material-symbols-outlined transition-transform group-open:rotate-180">expand_more</span>
+</summary>
+<div class="p-6 pt-0 text-on-surface-variant">
+                        Absolutely. All plans come with a built-in guest management system, real-time RSVP tracking, and automated email reminders for your guests.
+                    </div>
+</details>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="bg-surface-container-highest dark:bg-surface-dim w-full py-20 mt-20">
+<div class="max-w-container-max mx-auto px-margin-desktop grid grid-cols-1 md:grid-cols-4 gap-12">
+<div class="flex flex-col gap-6">
+<span class="font-headline-md text-headline-md text-on-surface font-bold">Moments</span>
+<p class="text-on-surface-variant">Curating the world's most meaningful celebrations with digital elegance.</p>
+<div class="flex gap-4">
+<a class="w-10 h-10 rounded-full bg-white flex items-center justify-center hover:text-primary transition-all shadow-sm" href="#">
+<span class="material-symbols-outlined text-sm">public</span>
+</a>
+<a class="w-10 h-10 rounded-full bg-white flex items-center justify-center hover:text-primary transition-all shadow-sm" href="#">
+<span class="material-symbols-outlined text-sm">mail</span>
+</a>
+</div>
+</div>
+<div>
+<h4 class="font-bold mb-6">Product</h4>
+<ul class="flex flex-col gap-4">
+<li><a class="text-on-surface-variant hover:text-primary transition-colors" href="#">Templates</a></li>
+<li><a class="text-on-surface-variant hover:text-primary transition-colors" href="#">Showcase</a></li>
+<li><a class="text-on-surface-variant hover:text-primary transition-colors" href="#">Pricing</a></li>
+<li><a class="text-on-surface-variant hover:text-primary transition-colors" href="#">Integrations</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-bold mb-6">Company</h4>
+<ul class="flex flex-col gap-4">
+<li><a class="text-on-surface-variant hover:text-primary transition-colors" href="#">About Us</a></li>
+<li><a class="text-on-surface-variant hover:text-primary transition-colors" href="#">Help Center</a></li>
+<li><a class="text-on-surface-variant hover:text-primary transition-colors" href="#">Contact Us</a></li>
+<li><a class="text-on-surface-variant hover:text-primary transition-colors" href="#">Careers</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-bold mb-6">Support</h4>
+<ul class="flex flex-col gap-4">
+<li><a class="text-on-surface-variant hover:text-primary transition-colors" href="#">Privacy Policy</a></li>
+<li><a class="text-on-surface-variant hover:text-primary transition-colors" href="#">Terms of Service</a></li>
+<li><a class="text-on-surface-variant hover:text-primary transition-colors" href="#">GDPR</a></li>
+</ul>
+</div>
+</div>
+<div class="max-w-container-max mx-auto px-margin-desktop mt-20 pt-8 border-t border-outline-variant">
+<p class="text-on-surface-variant text-sm text-center">© 2024 Moments Premium Celebrations. All rights reserved.</p>
+</div>
+</footer>
+<script>
+        // Simple Intersection Observer for reveal-up animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal-up').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Sticky Navbar subtle shrink
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                nav.classList.add('h-16');
+                nav.classList.remove('h-20');
+            } else {
+                nav.classList.add('h-20');
+                nav.classList.remove('h-16');
+            }
+        });
+    </script>
+</body></html>

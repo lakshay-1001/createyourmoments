@@ -1,0 +1,55 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+* {
+  box-sizing: border-box;
+}
+html {
+  scroll-behavior: smooth;
+}
+body {
+  margin: 0;
+  background: #fcf9f8;
+  color: #1c1b1b;
+  font-family: Inter, sans-serif;
+}
+.glass {
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  border: 1px solid rgba(255, 255, 255, 0.56);
+}
+.accent {
+  background: linear-gradient(135deg, #685d4a 0%, #70585b 100%);
+}
+.mesh {
+  background-color: #fcf9f8;
+  background-image:
+    radial-gradient(at 0% 0%, rgba(247, 231, 206, 0.65) 0, transparent 48%),
+    radial-gradient(at 70% 0%, rgba(251, 219, 222, 0.55) 0, transparent 45%),
+    radial-gradient(at 100% 50%, rgba(231, 231, 251, 0.55) 0, transparent 45%);
+}
+.container-pad {
+  @apply max-w-7xl mx-auto px-5 sm:px-8 lg:px-16;
+}
+.serif {
+  @apply font-serif;
+}
+.caps {
+  @apply text-[11px] tracking-[0.22em] uppercase font-bold;
+}
+.btn-primary {
+  @apply accent text-white rounded-full font-bold shadow-glow hover:scale-[1.02] active:scale-95 transition-all;
+}
+.btn-soft {
+  @apply glass rounded-full font-semibold hover:bg-white transition-all;
+}
+.section-title {
+  @apply font-serif text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight;
+}
+.field {
+  @apply w-full rounded-2xl border border-outline bg-white/70 px-4 py-3 outline-none focus:ring-2 focus:ring-primary/30;
+}
+.mobile-safe {
+  padding-bottom: max(1rem, env(safe-area-inset-bottom));
+}
