@@ -1,26 +1,29 @@
-# CreateYourMoments React MVP
+# CreateYourMoments - real template preview build
 
-React + TypeScript + Tailwind CSS project based on the uploaded Stitch homepage, template gallery and template preview references.
+This version adds real interactive template demos and template previews:
 
-## Run locally
+- Shubh Vivah Royal Card: Hindu wedding card with Ganesh blessing, invitation open, couple story, events, venue location and wishes.
+- Birthday Treasure Box: gift-box opening, memory unlocks, voice-note placeholder and confetti.
+- Love Story Journey: heart unlock, chapter cards and secret reveal.
+- Anniversary Time Machine, Friendship Adventure and Family Letter demo flows.
+
+Run locally:
+
 ```bash
 npm install
 npm run dev
 ```
 
-## Pages included
-- `/` Homepage
-- `/templates` Template gallery
-- `/templates/:slug` Template preview
-- `/create` Create Moment wizard
-- `/pricing` Pricing
-- `/dashboard` User dashboard mock
-- `/checkout` Payment placeholder
-- `/success` Payment success mock
-- `/m/demo` Interactive generated moment demo
-- `/privacy`, `/terms`, `/copyright`, `/contact`
+Build test:
 
-## Notes
-- Razorpay and Supabase are not connected yet.
-- Uploaded Stitch references are saved in `/reference`.
-- Replace remote image URLs with your own `/public` or Supabase Storage assets before production.
+```bash
+npm run build
+```
+
+Important routes:
+
+- `/templates`
+- `/templates/wedding-royal-envelope`
+- `/m/wedding-royal-envelope`
+- `/m/birthday-treasure-box`
+- `/m/love-story-journey`

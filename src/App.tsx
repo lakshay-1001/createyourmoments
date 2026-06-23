@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import Templates from "./pages/Templates";
 import TemplatePreview from "./pages/TemplatePreview";
@@ -10,6 +10,8 @@ import PaymentSuccess from "./pages/PaymentSuccess";
 import MomentView from "./pages/MomentView";
 import Legal from "./pages/Legal";
 import Contact from "./pages/Contact";
+import FAQ from "./pages/FAQ";
+
 export default function App() {
   return (
     <Routes>
@@ -22,6 +24,9 @@ export default function App() {
       <Route path="/checkout" element={<Checkout />} />
       <Route path="/success" element={<PaymentSuccess />} />
       <Route path="/m/demo" element={<MomentView />} />
+      <Route path="/m/:slug" element={<MomentView />} />
+      <Route path="/celebrate/:slug" element={<MomentView />} />
+      <Route path="/faq" element={<FAQ />} />
       <Route path="/privacy" element={<Legal type="privacy" />} />
       <Route path="/terms" element={<Legal type="terms" />} />
       <Route path="/copyright" element={<Legal type="copyright" />} />
