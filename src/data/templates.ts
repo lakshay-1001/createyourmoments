@@ -36,7 +36,7 @@ export const templates: Template[] = [
     description:
       "A premium Hindu wedding card experience with Ganesh blessing, royal invitation opening, couple story, event timeline, venue location, countdown, galleries and guest wishes.",
     image:
-      "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=1200&q=85",
     features: [
       "Ganesh blessing intro",
       "Bride & groom story",
@@ -47,7 +47,7 @@ export const templates: Template[] = [
       "Multiple picture galleries",
       "90 days active",
     ],
-    interactions: ["Open royal invitation", "Reveal couple story", "Tap event cards", "Open venue map", "Send wishes"],
+    interactions: ["Open royal envelope", "See your own name", "Reveal Ganesh blessing", "Tap event cards", "Open venue map", "Send blessings"],
     palette: ["#fcf9f8", "#685d4a", "#cec5ba", "#e7e7fb"],
     bestFor: "Hindu weddings, engagement ceremonies and premium family events",
   },
@@ -65,7 +65,7 @@ export const templates: Template[] = [
     image:
       "https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?auto=format&fit=crop&w=1200&q=80",
     features: ["Gift box reveal", "Balloon unlocks", "Voice message", "Memory gallery", "Confetti finale"],
-    interactions: ["Tap gift box", "Unlock balloons", "Reveal memories", "Play voice note", "Celebrate again"],
+    interactions: ["Tap gift box", "See your own name", "Unlock balloons", "Reveal photo memories", "Play voice note", "Confetti finale"],
     palette: ["#fff7ed", "#fbdbde", "#7c3aed", "#f59e0b"],
     bestFor: "Friends, siblings, kids and surprise birthdays",
   },
@@ -83,7 +83,7 @@ export const templates: Template[] = [
     image:
       "https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=1200&q=80",
     features: ["Heart unlock", "Timeline reveal", "Hidden notes", "Photo cards", "Final surprise"],
-    interactions: ["Unlock heart", "Swipe memories", "Flip hidden cards", "Reveal final message"],
+    interactions: ["Unlock heart", "See your own name", "Tap chapters", "Flip hidden cards", "Reveal final message"],
     palette: ["#0f172a", "#fbdbde", "#70585b", "#f7e7ce"],
     bestFor: "Girlfriend, boyfriend, proposal and romantic memories",
   },

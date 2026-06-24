@@ -1,7 +1,7 @@
 import Layout from "../components/Layout";
 import { Link, useSearchParams } from "react-router-dom";
 import { CheckCircle, Copy, ExternalLink, MessageCircle, ShieldCheck } from "lucide-react";
-import { copyText, createShareUrl, createWhatsAppText, openWhatsApp } from "../utils/share";
+import { copyText, createPersonalShareUrl, createWhatsAppText, openWhatsApp, createMomentCode } from "../utils/share";
 import { useMemo, useState } from "react";
 
 export default function PaymentSuccess() {
@@ -14,8 +14,9 @@ export default function PaymentSuccess() {
   const venue = params.get("venue") || "";
   const senderName = params.get("sender") || "";
   const receiverName = params.get("receiver") || "";
-  const shareUrl = createShareUrl(slug);
-  const shareText = useMemo(() => createWhatsAppText({ slug, title, category, eventDate, venue, senderName, receiverName }), [slug, title, category, eventDate, venue, senderName, receiverName]);
+  const momentCode = params.get("code") || createMomentCode(slug);
+  const shareUrl = createPersonalShareUrl({ slug, code: momentCode, receiverName });
+  const shareText = useMemo(() => createWhatsAppText({ slug, code: momentCode, title, category, eventDate, venue, senderName, receiverName }), [slug, title, category, eventDate, venue, senderName, receiverName]);
 
   async function handleCopyLink() {
     await copyText(shareUrl);
@@ -54,7 +55,7 @@ export default function PaymentSuccess() {
           </div>
 
           <div className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
-            <Link to={`/celebrate/${slug}`} className="btn-primary px-8 py-4">
+            <Link to={`/invite/${momentCode}/${slug}${receiverName ? `?to=${encodeURIComponent(receiverName)}` : ""}`} className="btn-primary px-8 py-4">
               <ExternalLink size={18} className="mr-2 inline" /> Open Moment
             </Link>
             <Link to="/dashboard" className="btn-soft px-8 py-4">

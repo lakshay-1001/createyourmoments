@@ -53,3 +53,21 @@ body {
 .mobile-safe {
   padding-bottom: max(1rem, env(safe-area-inset-bottom));
 }
+
+@media (max-width: 640px) {
+  .shadow-glow {
+    box-shadow: 0 22px 45px -24px rgba(104, 93, 74, 0.45);
+  }
+  .rounded-mobile-card {
+    border-radius: 1.75rem;
+  }
+  button, a {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+.overflow-x-auto {
+  -webkit-overflow-scrolling: touch;
+}
+.overflow-x-auto::-webkit-scrollbar {
+  display: none;
+}

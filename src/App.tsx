@@ -26,6 +26,8 @@ export default function App() {
       <Route path="/m/demo" element={<MomentView />} />
       <Route path="/m/:slug" element={<MomentView />} />
       <Route path="/celebrate/:slug" element={<MomentView />} />
+      <Route path="/invite/:code/:slug" element={<MomentView />} />
+      <Route path="/:code/:slug" element={<MomentView />} />
       <Route path="/faq" element={<FAQ />} />
       <Route path="/privacy" element={<Legal type="privacy" />} />
       <Route path="/terms" element={<Legal type="terms" />} />

@@ -1,20 +1,20 @@
 import Layout from "../components/Layout";
 import { Clock, Copy, Edit3, Eye, Link as LinkIcon, MessageCircle, Share2 } from "lucide-react";
 import { Link } from "react-router-dom";
-import { copyText, createShareUrl, createWhatsAppText, openWhatsApp } from "../utils/share";
+import { copyText, createPersonalShareUrl, createWhatsAppText, openWhatsApp } from "../utils/share";
 import { useState } from "react";
 
 const moments = [
-  { name: "Birthday Treasure Box", plan: "60 Day Moment", views: "124", shares: "31", status: "Active · 58 days left", slug: "anjali-birthday-surprise", category: "Birthday" },
-  { name: "Rahul & Priya Wedding", plan: "Wedding Card", views: "856", shares: "103", status: "Active · 87 days left", slug: "rahul-priya-wedding", category: "Wedding", venue: "The Royal Palace, Jaipur", eventDate: "18 Feb 2027" },
-  { name: "Love Story Journey", plan: "30 Day Moment", views: "0", shares: "0", status: "Draft", slug: "our-love-story", category: "Love Story" },
+  { name: "Birthday Treasure Box", plan: "60 Day Moment", views: "124", shares: "31", status: "Active · 58 days left", slug: "anjali-birthday-surprise", category: "Birthday", code: "cym-bday-demo", receiverName: "Anjali" },
+  { name: "Rahul & Priya Wedding", plan: "Wedding Card", views: "856", shares: "103", status: "Active · 87 days left", slug: "riya-weds-rahul", category: "Wedding", venue: "The Royal Palace, Jaipur", eventDate: "18 Feb 2027", code: "cym-wed-demo", receiverName: "Sharma Family" },
+  { name: "Love Story Journey", plan: "30 Day Moment", views: "0", shares: "0", status: "Draft", slug: "our-love-story", category: "Love Story", code: "cym-love-demo", receiverName: "Priya" },
 ];
 
 export default function Dashboard() {
   const [copied, setCopied] = useState("");
 
   async function copyMomentLink(slug: string) {
-    await copyText(createShareUrl(slug));
+    await copyText(createPersonalShareUrl({ slug }));
     setCopied(slug);
     setTimeout(() => setCopied(""), 1500);
   }
@@ -54,7 +54,8 @@ export default function Dashboard() {
             <span className="col-span-2">Name</span><span>Plan</span><span>Views</span><span>Shares</span><span>Status</span>
           </div>
           {moments.map((m) => {
-            const shareText = createWhatsAppText({ slug: m.slug, title: m.name, category: m.category, eventDate: m.eventDate, venue: m.venue });
+            const publicUrl = createPersonalShareUrl({ slug: m.slug, code: m.code, receiverName: m.receiverName });
+            const shareText = createWhatsAppText({ slug: m.slug, code: m.code, title: m.name, category: m.category, eventDate: m.eventDate, venue: m.venue, receiverName: m.receiverName });
             return (
               <div className="grid gap-3 border-t border-outline/30 p-4 text-sm md:grid-cols-6" key={m.name}>
                 <span className="font-bold md:col-span-2">{m.name}</span>
@@ -63,13 +64,13 @@ export default function Dashboard() {
                 <span>{m.shares}</span>
                 <span className="text-primary">{m.status}</span>
                 <div className="md:col-span-6">
-                  <p className="mb-3 break-all rounded-2xl bg-white/70 p-3 text-xs text-primary"><LinkIcon size={13} className="mr-1 inline" /> {createShareUrl(m.slug)}</p>
+                  <p className="mb-3 break-all rounded-2xl bg-white/70 p-3 text-xs text-primary"><LinkIcon size={13} className="mr-1 inline" /> {publicUrl}</p>
                   <div className="flex flex-wrap gap-2">
                     <button className="rounded-full border border-outline px-4 py-2 text-xs font-bold">Edit</button>
                     <button className="rounded-full border border-outline px-4 py-2 text-xs font-bold">Extend</button>
-                    <button onClick={() => copyMomentLink(m.slug)} className="rounded-full bg-primary px-4 py-2 text-xs font-bold text-white"><Copy size={13} className="mr-1 inline" /> {copied === m.slug ? "Copied" : "Copy Link"}</button>
+                    <button onClick={() => { copyText(publicUrl); setCopied(m.slug); setTimeout(() => setCopied(""), 1500); }} className="rounded-full bg-primary px-4 py-2 text-xs font-bold text-white"><Copy size={13} className="mr-1 inline" /> {copied === m.slug ? "Copied" : "Copy Link"}</button>
                     <button onClick={() => openWhatsApp(shareText)} className="rounded-full bg-[#25D366] px-4 py-2 text-xs font-bold text-white"><MessageCircle size={13} className="mr-1 inline" /> WhatsApp</button>
-                    <Link to={`/celebrate/${m.slug}`} className="rounded-full bg-surface-high px-4 py-2 text-xs font-bold">View</Link>
+                    <Link to={`/invite/${m.code}/${m.slug}?to=${encodeURIComponent(m.receiverName || "")}`} className="rounded-full bg-surface-high px-4 py-2 text-xs font-bold">View</Link>
                   </div>
                 </div>
               </div>

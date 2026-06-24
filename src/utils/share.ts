@@ -22,6 +22,12 @@ export function buildMomentSlug(input: {
   return slugify(base || `create-your-${suffix}`);
 }
 
+export function createMomentCode(seed?: string) {
+  const now = Date.now().toString(36);
+  const cleanSeed = slugify(seed || "cym").replace(/-/g, "").slice(0, 6);
+  return `${cleanSeed || "cym"}-${now}`;
+}
+
 export function getOrigin() {
   if (typeof window !== "undefined") return window.location.origin;
   return "https://createyourmoments.com";
@@ -29,6 +35,16 @@ export function getOrigin() {
 
 export function createShareUrl(slug: string) {
   return `${getOrigin()}/celebrate/${slug || "demo-moment"}`;
+}
+
+export function createPersonalShareUrl(args: {
+  slug: string;
+  code?: string;
+  receiverName?: string;
+}) {
+  const code = args.code || createMomentCode(args.slug);
+  const base = `${getOrigin()}/invite/${code}/${args.slug || "demo-moment"}`;
+  return args.receiverName ? `${base}?to=${encodeURIComponent(args.receiverName)}` : base;
 }
 
 export function createWhatsAppText(args: {
@@ -39,18 +55,21 @@ export function createWhatsAppText(args: {
   receiverName?: string;
   eventDate?: string;
   venue?: string;
+  code?: string;
 }) {
-  const url = createShareUrl(args.slug);
+  const url = createPersonalShareUrl({ slug: args.slug, code: args.code, receiverName: args.receiverName });
   const isWedding = args.category === "Wedding";
   if (isWedding) {
     return [
+      args.receiverName ? `Dear ${args.receiverName},` : "",
+      "",
       `💍 ${args.title}`,
       "",
       "You are warmly invited to celebrate this special wedding moment with us.",
       args.eventDate ? `📅 Date: ${args.eventDate}` : "",
       args.venue ? `📍 Venue: ${args.venue}` : "",
       "",
-      "Open the digital invitation here:",
+      "Open your personal digital invitation here:",
       url,
       "",
       "No app install. No login required.",
@@ -60,9 +79,11 @@ export function createWhatsAppText(args: {
   }
 
   return [
+    args.receiverName ? `Hi ${args.receiverName},` : "",
+    "",
     `✨ ${args.title}`,
     "",
-    `${args.senderName || "Someone special"} created a personal digital moment ${args.receiverName ? `for ${args.receiverName}` : "for you"}.`,
+    `${args.senderName || "Someone special"} created a personal digital moment ${args.receiverName ? `for you` : "for you"}.`,
     "Open it here:",
     url,
     "",
