@@ -1,16 +1,21 @@
+
 export type TemplateCategory =
   | "Birthday"
-  | "Anniversary"
   | "Wedding"
+  | "Engagement"
   | "Love Story"
+  | "Valentine"
+  | "Anniversary"
   | "Friendship"
-  | "Family";
+  | "Family"
+  | "Custom";
 
 export type Template = {
   id: string;
   slug: string;
   title: string;
   category: TemplateCategory;
+  occasion?: string;
   price30?: number;
   price60?: number;
   price90?: number;
@@ -22,135 +27,215 @@ export type Template = {
   interactions: string[];
   palette: string[];
   bestFor: string;
+  inputHints?: string[];
 };
 
 export const templates: Template[] = [
   {
     id: "t1",
-    slug: "wedding-royal-envelope",
-    title: "Shubh Vivah Royal Card",
+    slug: "hindu-wedding-royal-invite",
+    title: "Royal Hindu Wedding / Engagement Card",
     category: "Wedding",
+    occasion: "Wedding or Engagement",
     price90: 449,
     activePeriod: "90 days",
-    badge: "Premium",
+    badge: "Premium ₹449",
     description:
-      "A premium Hindu wedding card experience with Ganesh blessing, royal invitation opening, couple story, event timeline, venue location, countdown, galleries and guest wishes.",
+      "A premium Hindu wedding or engagement invitation experience with a royal envelope, Ganesh blessing, couple reveal, event flow, venue, family note and personalized guest name in the URL.",
     image:
       "https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=1200&q=85",
     features: [
+      "Works for wedding and engagement",
+      "No pre-wedding couple photos required",
       "Ganesh blessing intro",
-      "Bride & groom story",
-      "Haldi, Mehendi, Sangeet & Wedding sections",
-      "Venue location and maps block",
-      "Wedding countdown",
-      "Guest wishes UI",
-      "Multiple picture galleries",
+      "Bride & groom / couple reveal",
+      "Haldi, Mehendi, Sangeet, Engagement or Wedding events",
+      "Venue and Google Maps block",
+      "Personalized guest name from link",
       "90 days active",
     ],
-    interactions: ["Open royal envelope", "See your own name", "Reveal Ganesh blessing", "Tap event cards", "Open venue map", "Send blessings"],
-    palette: ["#fcf9f8", "#685d4a", "#cec5ba", "#e7e7fb"],
-    bestFor: "Hindu weddings, engagement ceremonies and premium family events",
+    interactions: [
+      "Open royal envelope",
+      "Read personalized guest welcome",
+      "Tap story, events, venue and blessings",
+      "Auto-scroll guided journey",
+      "Send trusted WhatsApp message",
+    ],
+    palette: ["#fff7ed", "#7c2d12", "#f59e0b", "#ffffff"],
+    bestFor: "Hindu weddings, ring ceremonies, roka, engagement and premium family invitations",
+    inputHints: [
+      "Bride/groom names or couple names",
+      "Wedding or engagement date",
+      "Venue and Google Maps link",
+      "Optional simple portrait or invitation-style image",
+      "Family names are optional",
+    ],
   },
   {
     id: "t2",
     slug: "birthday-treasure-box",
     title: "Birthday Treasure Box",
     category: "Birthday",
+    occasion: "Birthday",
     price30: 79,
     price60: 149,
     activePeriod: "30 or 60 days",
-    badge: "Launch",
+    badge: "Best Starter",
     description:
-      "A magical gift box opens into balloons, memories, voice notes, wishes and a confetti finale.",
+      "A gift box opens into balloons, photo memories, wishes, voice note prompt and confetti finale. Made for quick birthday surprises that feel personal.",
     image:
-      "https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?auto=format&fit=crop&w=1200&q=80",
-    features: ["Gift box reveal", "Balloon unlocks", "Voice message", "Memory gallery", "Confetti finale"],
-    interactions: ["Tap gift box", "See your own name", "Unlock balloons", "Reveal photo memories", "Play voice note", "Confetti finale"],
+      "https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&w=1200&q=80",
+    features: [
+      "Gift box opening",
+      "Photo memory cards",
+      "Birthday message reveal",
+      "Voice note placeholder",
+      "Confetti finale",
+    ],
+    interactions: [
+      "Tap gift",
+      "Unlock 3 memories",
+      "Reveal message",
+      "Auto-scroll finale",
+    ],
     palette: ["#fff7ed", "#fbdbde", "#7c3aed", "#f59e0b"],
-    bestFor: "Friends, siblings, kids and surprise birthdays",
+    bestFor: "Friends, siblings, kids, partner and last-minute birthday surprises",
   },
   {
     id: "t3",
     slug: "love-story-journey",
     title: "Love Story Journey",
     category: "Love Story",
+    occasion: "Love Story",
     price30: 79,
     price60: 149,
     activePeriod: "30 or 60 days",
-    badge: "Popular",
+    badge: "Most Emotional",
     description:
-      "Unlock a heart, reveal memories, swipe photo cards and end with a secret message for someone special.",
+      "A romantic lock-screen style experience where the receiver unlocks the heart, reveals chapters and reaches a final secret message.",
     image:
       "https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=1200&q=80",
-    features: ["Heart unlock", "Timeline reveal", "Hidden notes", "Photo cards", "Final surprise"],
-    interactions: ["Unlock heart", "See your own name", "Tap chapters", "Flip hidden cards", "Reveal final message"],
+    features: [
+      "Heart unlock",
+      "Story chapters",
+      "Hidden promise cards",
+      "Photo slots",
+      "Final surprise note",
+    ],
+    interactions: [
+      "Unlock heart",
+      "Tap chapters",
+      "Reveal hidden notes",
+      "Auto-scroll to final message",
+    ],
     palette: ["#0f172a", "#fbdbde", "#70585b", "#f7e7ce"],
-    bestFor: "Girlfriend, boyfriend, proposal and romantic memories",
+    bestFor: "Girlfriend, boyfriend, wife, husband, crush, proposal and romantic memories",
   },
   {
     id: "t4",
-    slug: "golden-anniversary",
-    title: "Golden Anniversary",
-    category: "Anniversary",
+    slug: "valentine-week-love-unlock",
+    title: "Valentine Week Love Unlock",
+    category: "Valentine",
+    occasion: "Valentine Week",
     price30: 79,
     price60: 149,
     activePeriod: "30 or 60 days",
+    badge: "2027 Focus",
     description:
-      "A warm anniversary timeline with year-by-year memories, vows, promises and a calm cinematic feel.",
+      "A Valentine Week experience covering Rose Day, Propose Day, Chocolate Day, Teddy Day, Promise Day, Hug Day, Kiss Day and Valentine's Day with tap-to-unlock surprises.",
     image:
-      "https://images.unsplash.com/photo-1523438885200-e635ba2c371e?auto=format&fit=crop&w=1200&q=80",
-    features: ["Timeline", "Photo gallery", "Promises", "Music", "Final letter"],
-    interactions: ["Select year", "Reveal photo", "Open promise card", "Play message"],
-    palette: ["#f7e7ce", "#685d4a", "#ffffff", "#70585b"],
-    bestFor: "Couples and married partners",
+      "https://images.unsplash.com/photo-1518621736915-f3b1c41bfd00?auto=format&fit=crop&w=1200&q=80",
+    features: [
+      "8 Valentine Week cards",
+      "Rose Day reveal",
+      "Propose Day ring box",
+      "Promise unlocks",
+      "Final Valentine's message",
+    ],
+    interactions: [
+      "Tap each Valentine day",
+      "Open mini surprises",
+      "Reveal final love note",
+      "Share with custom name",
+    ],
+    palette: ["#fff1f2", "#be123c", "#fb7185", "#ffffff"],
+    bestFor: "Valentine Week 2027, couples, crush and romantic proposals",
   },
   {
     id: "t5",
-    slug: "friendship-adventure",
-    title: "Friendship Adventure",
-    category: "Friendship",
+    slug: "anniversary-time-capsule",
+    title: "Anniversary Time Capsule",
+    category: "Anniversary",
+    occasion: "Anniversary",
     price30: 79,
     price60: 149,
     activePeriod: "30 or 60 days",
     description:
-      "A fun clue-based friendship page with memories, jokes, friendship awards and a final surprise reveal.",
+      "A warm timeline where each year unlocks a memory, promise and future dream. Calm, premium and emotional.",
     image:
-      "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1200&q=80",
-    features: ["Guess who", "Memory quiz", "Roast cards", "Awards", "Final reveal"],
-    interactions: ["Reveal clues", "Answer quiz", "Tap award cards", "Unlock secret"],
-    palette: ["#e7e7fb", "#fbdbde", "#685d4a", "#ffffff"],
-    bestFor: "Best friends and college groups",
+      "https://images.unsplash.com/photo-1523438885200-e635ba2c371e?auto=format&fit=crop&w=1200&q=80",
+    features: ["Timeline", "Promise cards", "Photo slots", "Future dreams", "Final letter"],
+    interactions: ["Select year", "Reveal photo", "Open promise", "Read final letter"],
+    palette: ["#f7e7ce", "#685d4a", "#ffffff", "#70585b"],
+    bestFor: "Married couples and long-term relationships",
   },
   {
     id: "t6",
-    slug: "family-letter",
-    title: "Family Letter",
-    category: "Family",
+    slug: "friendship-adventure",
+    title: "Friendship Adventure",
+    category: "Friendship",
+    occasion: "Friendship",
     price30: 79,
     price60: 149,
     activePeriod: "30 or 60 days",
     description:
-      "An emotional letter experience for mother, father, siblings and family moments with voice and reasons cards.",
+      "A fun clue-based friendship experience with memory quiz, roast cards, awards and a final reveal.",
+    image:
+      "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1200&q=80",
+    features: ["Guess who", "Memory quiz", "Roast cards", "Awards", "Final reveal"],
+    interactions: ["Reveal clues", "Tap awards", "Unlock secret", "Share with friend"],
+    palette: ["#e7e7fb", "#fbdbde", "#685d4a", "#ffffff"],
+    bestFor: "Best friends, college groups and friendship day",
+  },
+  {
+    id: "t7",
+    slug: "family-blessing-letter",
+    title: "Family Blessing Letter",
+    category: "Family",
+    occasion: "Family Appreciation",
+    price30: 79,
+    price60: 149,
+    activePeriod: "30 or 60 days",
+    description:
+      "An emotional letter experience for mother, father, siblings and family. It focuses on reasons cards, gratitude and voice note prompts.",
     image:
       "https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=1200&q=80",
-    features: ["Open letter", "Voice note", "Reasons cards", "Photo memories", "Thank-you screen"],
-    interactions: ["Open note", "Reveal reasons", "Play voice", "Unlock final letter"],
+    features: ["Open letter", "Reasons cards", "Voice note prompt", "Photo memories", "Thank-you screen"],
+    interactions: ["Open note", "Reveal reasons", "Play message", "Unlock final letter"],
     palette: ["#fcf9f8", "#f7e7ce", "#70585b", "#cec5ba"],
-    bestFor: "Mother, father, siblings and family appreciation",
+    bestFor: "Mother, father, siblings, grandparents and family appreciation",
   },
 ];
 
 export const categories = [
   "All Templates",
   "Birthday",
-  "Anniversary",
   "Wedding",
   "Love Story",
+  "Valentine",
+  "Anniversary",
   "Friendship",
   "Family",
 ] as const;
 
 export function displayTemplatePrice(template: Template) {
-  if (template.category === "Wedding") return "₹449";
-  return "₹79 / ₹149";
+  if (template.category === "Wedding" || template.category === "Engagement") return "₹449 / 90 days";
+  return "₹79 / 30 days · ₹149 / 60 days";
+}
+
+export function defaultPlanForTemplate(template: Template) {
+  if (template.category === "Wedding" || template.category === "Engagement") {
+    return { id: "wedding-90", amount: 449, durationDays: 90 };
+  }
+  return { id: "standard-60", amount: 149, durationDays: 60 };
 }

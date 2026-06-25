@@ -1,133 +1,317 @@
-import { useMemo, useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
-import Layout from "../components/Layout";
-import { displayTemplatePrice, templates } from "../data/templates";
-import { buildMomentSlug, createShareUrl, slugify } from "../utils/share";
-import { Eye, Image, Link as LinkIcon, MapPin, MessageSquare, Mic, Music, ShieldCheck, Upload, User } from "lucide-react";
 
-const steps = ["Template", "Photos", "Names", "Messages", "Audio", "Preview"];
+import { useMemo, useState } from "react";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import Layout from "../components/Layout";
+import { defaultPlanForTemplate, displayTemplatePrice, templates } from "../data/templates";
+import { buildMomentSlug, createPersonalShareUrl } from "../utils/share";
+import { CalendarDays, Camera, CheckCircle, HeartHandshake, Loader2, MapPin, MessageSquare, Music, ShieldCheck, Sparkles, User } from "lucide-react";
+import RealTemplateExperience from "../components/RealTemplateExperience";
+import { saveMomentDraft } from "../lib/supabaseClient";
+
+const steps = ["Template", "Details", "Message", "Preview"];
 
 export default function CreateMoment() {
   const [params] = useSearchParams();
+  const navigate = useNavigate();
   const initial = useMemo(() => templates.find((t) => t.slug === params.get("template")) || templates[0], [params]);
   const [step, setStep] = useState(0);
   const [selected, setSelected] = useState(initial.slug);
-  const [yourName, setYourName] = useState("");
-  const [receiverName, setReceiverName] = useState("");
-  const [momentTitle, setMomentTitle] = useState("");
-  const [eventDate, setEventDate] = useState("");
-  const [venue, setVenue] = useState("");
-  const [customSlug, setCustomSlug] = useState("");
+  const [saving, setSaving] = useState(false);
+  const [saveNote, setSaveNote] = useState("");
+
+  const [form, setForm] = useState({
+    occasion: initial.occasion || initial.category,
+    senderName: "",
+    receiverName: "",
+    momentTitle: initial.category === "Wedding" ? "Riya & Rahul Wedding" : "",
+    eventDate: "",
+    venue: "",
+    mapLink: "",
+    message: "",
+    customSlug: "",
+    planId: initial.category === "Wedding" ? "wedding-90" : "standard-60",
+  });
+
   const template = templates.find((t) => t.slug === selected) || templates[0];
+  const recommendedPlan = defaultPlanForTemplate(template);
+  const plan =
+    form.planId === "standard-30"
+      ? { id: "standard-30", amount: 79, durationDays: 30 }
+      : form.planId === "wedding-90"
+        ? { id: "wedding-90", amount: 449, durationDays: 90 }
+        : { id: "standard-60", amount: 149, durationDays: 60 };
 
   const generatedSlug = buildMomentSlug({
     templateCategory: template.category,
-    title: customSlug || momentTitle,
-    yourName,
-    receiverName,
+    title: form.customSlug || form.momentTitle || template.title,
+    yourName: form.senderName,
+    receiverName: form.receiverName,
   });
-  const shareUrl = createShareUrl(generatedSlug);
-  const checkoutPlan = template.category === "Wedding" ? "wedding-90" : "standard-60";
+
+  const shareUrl = createPersonalShareUrl({
+    slug: generatedSlug,
+    code: "preview",
+    receiverName: form.receiverName,
+  });
+
+  function update(key: keyof typeof form, value: string) {
+    setForm((f) => ({ ...f, [key]: value }));
+  }
+
+  function chooseTemplate(slug: string) {
+    const t = templates.find((x) => x.slug === slug) || templates[0];
+    setSelected(slug);
+    const p = defaultPlanForTemplate(t);
+    setForm((f) => ({
+      ...f,
+      occasion: t.occasion || t.category,
+      planId: p.id,
+      momentTitle: t.category === "Wedding" ? f.momentTitle || "Riya & Rahul Wedding" : f.momentTitle,
+    }));
+  }
+
+  async function continueToCheckout() {
+    setSaving(true);
+    setSaveNote("");
+
+    const payload = {
+      template_slug: template.slug,
+      template_title: template.title,
+      category: template.category,
+      occasion: form.occasion,
+      sender_name: form.senderName,
+      receiver_name: form.receiverName,
+      moment_title: form.momentTitle || template.title,
+      event_date: form.eventDate || null,
+      venue: form.venue,
+      custom_slug: form.customSlug,
+      slug: generatedSlug,
+      share_url: shareUrl,
+      plan_id: plan.id,
+      duration_days: plan.durationDays,
+      amount: plan.amount,
+      form_data: {
+        ...form,
+        mapLink: form.mapLink,
+        customerMessage: form.message,
+        recommendedInputs: template.inputHints || [],
+      },
+    };
+
+    await saveMomentDraft(payload);
+
+    setSaving(false);
+    setSaveNote("Draft saved. Moving to checkout...");
+    const qs = new URLSearchParams({
+      plan: plan.id,
+      slug: generatedSlug,
+      title: form.momentTitle || template.title,
+      category: template.category,
+      date: form.eventDate,
+      venue: form.venue,
+      sender: form.senderName,
+      receiver: form.receiverName,
+      template: template.slug,
+      amount: String(plan.amount),
+      duration: String(plan.durationDays),
+    });
+
+    setTimeout(() => navigate(`/checkout?${qs.toString()}`), 500);
+  }
 
   return (
     <Layout>
-      <section className="mesh py-12 sm:py-20">
+      <section className="mesh py-10 sm:py-16">
         <div className="container-pad">
           <div className="mx-auto max-w-6xl">
             <p className="caps text-primary">Create Moment Flow</p>
-            <h1 className="serif mt-3 text-4xl font-bold sm:text-6xl">Build a trusted shareable moment.</h1>
-            <p className="mt-4 max-w-2xl text-muted">Create a readable link like <b>createyourmoments.com/celebrate/rahul-priya-wedding</b> so it feels safer than a random URL.</p>
-            <div className="mt-8 grid gap-6 lg:grid-cols-[280px_1fr]">
-              <aside className="glass h-max rounded-3xl p-4">
-                {steps.map((s, i) => (
-                  <button key={s} onClick={() => setStep(i)} className={`mb-2 flex w-full items-center gap-3 rounded-2xl p-4 text-left ${step === i ? "bg-primary text-white" : "hover:bg-white"}`}>
-                    <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/30 text-sm">{i + 1}</span>{s}
-                  </button>
-                ))}
-                <div className="mt-4 rounded-2xl bg-white/70 p-4 text-xs text-muted">
-                  <ShieldCheck size={16} className="mb-2 text-primary" />
-                  Viewers do not need login, app install or payment. This increases trust on WhatsApp.
-                </div>
-              </aside>
-              <div className="glass min-h-[560px] rounded-3xl p-5 sm:p-10">
-                <div className="mb-8 h-2 rounded-full bg-surface-high"><div className="h-2 rounded-full bg-primary transition-all" style={{ width: `${((step + 1) / steps.length) * 100}%` }} /></div>
+            <h1 className="serif mt-3 text-4xl font-bold leading-tight sm:text-6xl">
+              Create once. Share a trusted, personal link.
+            </h1>
+            <p className="mt-4 max-w-2xl text-muted">
+              Designed for mobile guests. We keep the flow short, guided and mostly automated so customers can buy quickly.
+            </p>
 
-                {step === 0 && <Panel icon={<User />} title="Choose template and duration">
-                  <div className="grid gap-3 sm:grid-cols-2">
-                    {templates.map((t) => (
-                      <button key={t.id} onClick={() => setSelected(t.slug)} className={`rounded-2xl border p-4 text-left ${selected === t.slug ? "border-primary bg-cream" : "border-outline/50 bg-white/70 hover:border-primary"}`}>
-                        <b>{t.title}</b><p className="text-sm text-muted">{t.category} · {displayTemplatePrice(t)} · {t.activePeriod}</p>
-                      </button>
-                    ))}
-                  </div>
-                </Panel>}
-
-                {step === 1 && <Panel icon={<Image />} title="Upload photos">
-                  <UploadBox label="Upload cover photo" /><UploadBox label="Upload memory photos" />
-                  {template.category === "Wedding" && <UploadBox label="Upload bride, groom and event gallery photos" />}
-                  <p className="text-sm text-muted">Production note: connect this to Supabase Storage later.</p>
-                </Panel>}
-
-                {step === 2 && <Panel icon={<User />} title="Add names, date and trusted link">
-                  <div className="grid gap-4 sm:grid-cols-2">
-                    <input value={yourName} onChange={(e) => setYourName(e.target.value)} className="field" placeholder={template.category === "Wedding" ? "Bride name" : "Your name"} />
-                    <input value={receiverName} onChange={(e) => setReceiverName(e.target.value)} className="field" placeholder={template.category === "Wedding" ? "Groom name" : "Receiver name"} />
-                    <input value={eventDate} onChange={(e) => setEventDate(e.target.value)} className="field" placeholder="Special date" type="date" />
-                    {template.category === "Wedding" && <input value={venue} onChange={(e) => setVenue(e.target.value)} className="field" placeholder="Venue name" />}
-                    <input value={momentTitle} onChange={(e) => setMomentTitle(e.target.value)} className="field sm:col-span-2" placeholder={template.category === "Wedding" ? "Title e.g. Rahul & Priya Wedding" : "Title e.g. Anjali Birthday Surprise"} />
-                    <div className="sm:col-span-2 rounded-3xl bg-white/70 p-5">
-                      <label className="text-sm font-bold text-text">Readable share link</label>
-                      <div className="mt-3 flex flex-col gap-3 sm:flex-row">
-                        <span className="rounded-2xl bg-surface-high px-4 py-3 text-sm text-muted">createyourmoments.com/celebrate/</span>
-                        <input value={customSlug} onChange={(e) => setCustomSlug(slugify(e.target.value))} className="field flex-1" placeholder={generatedSlug} />
-                      </div>
-                      <p className="mt-3 break-all text-sm text-primary"><LinkIcon size={15} className="mr-1 inline" /> {shareUrl}</p>
-                      <p className="mt-2 text-xs text-muted">Readable links are easier to trust and share on WhatsApp than random codes.</p>
-                    </div>
-                    {template.category === "Wedding" && <input className="field sm:col-span-2" placeholder="Venue location / Google Maps link" />}
-                  </div>
-                </Panel>}
-
-                {step === 3 && <Panel icon={<MessageSquare />} title="Add messages">
-                  <textarea className="field min-h-36" placeholder="Write your emotional message..." />
-                  <textarea className="field mt-4 min-h-28" placeholder="Final surprise message..." />
-                  {template.category === "Wedding" && <textarea className="field mt-4 min-h-28" placeholder="Wedding schedule: Haldi, Mehndi, Wedding, Reception..." />}
-                </Panel>}
-
-                {step === 4 && <Panel icon={<Music />} title="Voice, music and extras">
-                  <UploadBox icon={<Mic />} label="Upload voice note" />
-                  {template.category === "Wedding" && <UploadBox icon={<MapPin />} label="Add location / venue details" />}
-                  <div className="mt-4 grid gap-3 sm:grid-cols-3">{["Soft Piano", "Romantic Ambient", "Birthday Joy"].map((m) => <button className="rounded-2xl bg-white p-4 text-left shadow-ambient" key={m}>♫ {m}</button>)}</div>
-                </Panel>}
-
-                {step === 5 && <Panel icon={<Eye />} title="Preview and continue">
-                  <div className="rounded-3xl bg-white p-6 shadow-ambient">
-                    <p className="caps text-primary">Preview Ready</p>
-                    <h3 className="serif mt-3 text-3xl font-bold">{momentTitle || template.title}</h3>
-                    <p className="mt-3 text-muted">Selected price: {displayTemplatePrice(template)} · Active: {template.activePeriod}</p>
-                    <div className="mt-5 rounded-2xl bg-cream/70 p-4">
-                      <b>Trusted link</b>
-                      <p className="mt-2 break-all text-sm text-primary">{shareUrl}</p>
-                    </div>
-                    <p className="mt-3 text-muted">After Razorpay payment, this slug will be saved in Supabase and become the public share URL.</p>
-                    <Link to={`/checkout?plan=${checkoutPlan}&slug=${generatedSlug}&title=${encodeURIComponent(momentTitle || template.title)}&category=${encodeURIComponent(template.category)}&date=${encodeURIComponent(eventDate)}&venue=${encodeURIComponent(venue)}&sender=${encodeURIComponent(yourName)}&receiver=${encodeURIComponent(receiverName)}`} className="btn-primary mt-8 inline-block px-8 py-4">Continue to Payment</Link>
-                  </div>
-                </Panel>}
-
-                <div className="mt-8 flex justify-between"><button disabled={step === 0} onClick={() => setStep(Math.max(0, step - 1))} className="rounded-full border border-outline px-6 py-3 disabled:opacity-40">Back</button><button disabled={step === steps.length - 1} onClick={() => setStep(Math.min(steps.length - 1, step + 1))} className="btn-primary px-7 py-3 disabled:opacity-40">Next</button></div>
-              </div>
+            <div className="mt-8 flex gap-2 overflow-x-auto pb-2">
+              {steps.map((s, i) => (
+                <button
+                  key={s}
+                  onClick={() => setStep(i)}
+                  className={`shrink-0 rounded-full px-5 py-3 text-sm font-bold ${step === i ? "bg-primary text-white" : "bg-white text-muted"}`}
+                >
+                  {i + 1}. {s}
+                </button>
+              ))}
             </div>
           </div>
+        </div>
+      </section>
+
+      <section className="container-pad py-8">
+        <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[1fr_390px]">
+          <div className="glass rounded-[2rem] p-5 sm:p-8">
+            {step === 0 && (
+              <div>
+                <h2 className="serif text-3xl font-bold">Choose your Phase 1 template</h2>
+                <p className="mt-2 text-muted">Wedding/engagement has premium pricing. All other experiences can be 30 or 60 days active.</p>
+                <div className="mt-6 grid gap-4 sm:grid-cols-2">
+                  {templates.map((t) => (
+                    <button
+                      key={t.slug}
+                      onClick={() => chooseTemplate(t.slug)}
+                      className={`rounded-[1.5rem] border p-4 text-left transition ${selected === t.slug ? "border-primary bg-cream shadow-glow" : "border-outline/40 bg-white hover:-translate-y-1 hover:shadow-ambient"}`}
+                    >
+                      <img src={t.image} alt={t.title} className="h-36 w-full rounded-2xl object-cover" />
+                      <div className="mt-4 flex items-center justify-between gap-3">
+                        <h3 className="serif text-xl font-bold">{t.title}</h3>
+                        {t.badge && <span className="rounded-full bg-primary px-3 py-1 text-[10px] font-bold uppercase text-white">{t.badge}</span>}
+                      </div>
+                      <p className="mt-2 text-sm text-muted">{t.bestFor}</p>
+                      <p className="mt-3 text-sm font-bold text-primary">{displayTemplatePrice(t)}</p>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {step === 1 && (
+              <div>
+                <h2 className="serif text-3xl font-bold">Add the details that make it personal</h2>
+                <div className="mt-6 grid gap-4 sm:grid-cols-2">
+                  <Field icon={<Sparkles size={18} />} label="Occasion" value={form.occasion} onChange={(v) => update("occasion", v)} placeholder="Wedding, Engagement, Birthday..." />
+                  <Field icon={<User size={18} />} label="Your / host name" value={form.senderName} onChange={(v) => update("senderName", v)} placeholder="Your name" />
+                  <Field icon={<HeartHandshake size={18} />} label="Receiver / guest name optional" value={form.receiverName} onChange={(v) => update("receiverName", v)} placeholder="Anjali, Riya, Family..." />
+                  <Field icon={<MessageSquare size={18} />} label="Title" value={form.momentTitle} onChange={(v) => update("momentTitle", v)} placeholder="Riya & Rahul Wedding" />
+                  <Field icon={<CalendarDays size={18} />} label="Date optional" value={form.eventDate} onChange={(v) => update("eventDate", v)} type="date" placeholder="" />
+                  <Field icon={<MapPin size={18} />} label="Venue optional" value={form.venue} onChange={(v) => update("venue", v)} placeholder="Royal Palace, Jaipur" />
+                </div>
+
+                {template.category === "Wedding" && (
+                  <div className="mt-6 rounded-[2rem] bg-white p-5 shadow-ambient">
+                    <h3 className="font-bold">Wedding / engagement detailing</h3>
+                    <p className="mt-2 text-sm leading-6 text-muted">
+                      This template is built for cases where the marriage or engagement has not happened yet. Customer can use a simple couple photo, invitation image, family photo, ring photo or decorative image instead of professional bride/groom photos.
+                    </p>
+                    <input className="field mt-4" placeholder="Google Maps link optional" value={form.mapLink} onChange={(e) => update("mapLink", e.target.value)} />
+                  </div>
+                )}
+              </div>
+            )}
+
+            {step === 2 && (
+              <div>
+                <h2 className="serif text-3xl font-bold">Message, media and active period</h2>
+                <textarea
+                  className="field mt-6 min-h-36"
+                  placeholder="Write the main message. Example: Dear Anjali, your presence means the world to us..."
+                  value={form.message}
+                  onChange={(e) => update("message", e.target.value)}
+                />
+
+                <div className="mt-6 grid gap-4 sm:grid-cols-3">
+                  <UploadHint icon={<Camera />} title="Photos" text="Upload will connect to Supabase Storage next." />
+                  <UploadHint icon={<Music />} title="Music" text="Use royalty-free music or user-owned audio." />
+                  <UploadHint icon={<MessageCircleIcon />} title="Voice" text="Voice notes make pages feel emotional." />
+                </div>
+
+                <div className="mt-6 rounded-[2rem] bg-white p-5 shadow-ambient">
+                  <p className="font-bold">Choose active period</p>
+                  <div className="mt-4 grid gap-3 sm:grid-cols-3">
+                    {template.category !== "Wedding" && (
+                      <PlanButton active={form.planId === "standard-30"} title="30 Days" price="₹79" onClick={() => update("planId", "standard-30")} />
+                    )}
+                    {template.category !== "Wedding" && (
+                      <PlanButton active={form.planId === "standard-60"} title="60 Days" price="₹149" onClick={() => update("planId", "standard-60")} />
+                    )}
+                    {template.category === "Wedding" && (
+                      <PlanButton active={form.planId === "wedding-90"} title="90 Days Premium" price="₹449" onClick={() => update("planId", "wedding-90")} />
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {step === 3 && (
+              <div>
+                <h2 className="serif text-3xl font-bold">Preview before payment</h2>
+                <div className="mt-5 rounded-[2rem] bg-white p-4 shadow-ambient">
+                  <RealTemplateExperience slug={template.slug} mode="embedded" receiverName={form.receiverName} draft={{
+                    moment_title: form.momentTitle,
+                    event_date: form.eventDate,
+                    venue: form.venue,
+                    occasion: form.occasion,
+                  }} />
+                </div>
+
+                <div className="mt-6 rounded-[2rem] bg-cream p-5 text-sm leading-7 text-muted">
+                  <b className="text-text">Trusted link preview:</b>
+                  <br />
+                  <span className="break-all text-primary">{shareUrl}</span>
+                </div>
+
+                <button onClick={continueToCheckout} disabled={saving} className="btn-primary mt-6 flex w-full items-center justify-center gap-2 py-4">
+                  {saving ? <Loader2 className="animate-spin" size={18} /> : <ShieldCheck size={18} />}
+                  {saving ? "Saving draft..." : `Continue to Checkout • ₹${plan.amount}`}
+                </button>
+                {saveNote && <p className="mt-3 text-center text-sm text-green-700">{saveNote}</p>}
+              </div>
+            )}
+
+            <div className="mt-8 flex items-center justify-between">
+              <button disabled={step === 0} onClick={() => setStep((s) => Math.max(0, s - 1))} className="rounded-full bg-white px-5 py-3 text-sm font-bold text-muted disabled:opacity-40">Back</button>
+              {step < steps.length - 1 ? (
+                <button onClick={() => setStep((s) => Math.min(steps.length - 1, s + 1))} className="btn-primary px-7 py-3 text-sm">
+                  Next <CheckCircle className="ml-2 inline" size={16} />
+                </button>
+              ) : (
+                <Link to="/templates" className="text-sm font-bold text-primary">Change template</Link>
+              )}
+            </div>
+          </div>
+
+          <aside className="h-max rounded-[2rem] bg-white p-5 shadow-ambient lg:sticky lg:top-24">
+            <p className="caps text-primary">Selected</p>
+            <img src={template.image} alt={template.title} className="mt-4 h-48 w-full rounded-[1.5rem] object-cover" />
+            <h2 className="serif mt-5 text-3xl font-bold">{template.title}</h2>
+            <p className="mt-2 text-sm leading-6 text-muted">{template.description}</p>
+            <div className="mt-5 rounded-2xl bg-cream p-4">
+              <p className="text-sm font-bold">Current price: ₹{plan.amount}</p>
+              <p className="mt-1 text-xs text-muted">Active for {plan.durationDays} days</p>
+            </div>
+            <ul className="mt-5 space-y-3 text-sm text-muted">
+              {template.features.slice(0, 5).map((f) => (
+                <li key={f} className="flex gap-2"><CheckCircle size={16} className="mt-0.5 text-primary" /> {f}</li>
+              ))}
+            </ul>
+          </aside>
         </div>
       </section>
     </Layout>
   );
 }
 
-function Panel({ icon, title, children }: { icon: React.ReactNode; title: string; children: React.ReactNode }) {
-  return <div><div className="mb-6 flex items-center gap-3 text-primary">{icon}<h2 className="serif text-3xl font-bold text-text">{title}</h2></div><div className="space-y-4">{children}</div></div>;
+function Field({ icon, label, value, onChange, placeholder, type = "text" }: { icon: React.ReactNode; label: string; value: string; onChange: (v: string) => void; placeholder: string; type?: string }) {
+  return (
+    <label>
+      <span className="mb-2 flex items-center gap-2 text-sm font-bold text-muted">{icon} {label}</span>
+      <input className="field" type={type} value={value} onChange={(e) => onChange(e.target.value)} placeholder={placeholder} />
+    </label>
+  );
 }
 
-function UploadBox({ label, icon }: { label: string; icon?: React.ReactNode }) {
-  return <div className="rounded-3xl border-2 border-dashed border-outline bg-white/60 p-8 text-center"><div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-cream text-primary">{icon || <Upload />}</div><b>{label}</b><p className="mt-2 text-sm text-muted">Drag and drop or click to upload</p></div>;
+function UploadHint({ icon, title, text }: { icon: React.ReactNode; title: string; text: string }) {
+  return <div className="rounded-[1.5rem] bg-white p-4 shadow-ambient"><div className="text-primary">{icon}</div><p className="mt-3 font-bold">{title}</p><p className="mt-1 text-xs leading-5 text-muted">{text}</p></div>;
+}
+
+function PlanButton({ active, title, price, onClick }: { active: boolean; title: string; price: string; onClick: () => void }) {
+  return (
+    <button onClick={onClick} className={`rounded-[1.5rem] border p-4 text-left ${active ? "border-primary bg-primary text-white" : "border-outline/40 bg-white text-text"}`}>
+      <b>{title}</b>
+      <span className="mt-1 block text-2xl font-bold">{price}</span>
+    </button>
+  );
+}
+
+function MessageCircleIcon() {
+  return <MessageSquare />;
 }

@@ -1,29 +1,72 @@
-# CreateYourMoments - real template preview build
+# Create Your Moments - Phase 1 Ready Build
 
-This version adds real interactive template demos and template previews:
+This build is prepared for the Phase 1 business model:
 
-- Shubh Vivah Royal Card: Hindu wedding card with Ganesh blessing, invitation open, couple story, events, venue location and wishes.
-- Birthday Treasure Box: gift-box opening, memory unlocks, voice-note placeholder and confetti.
-- Love Story Journey: heart unlock, chapter cards and secret reveal.
-- Anniversary Time Machine, Friendship Adventure and Family Letter demo flows.
+- Birthday Treasure Box
+- Love Story Journey
+- Valentine Week Love Unlock
+- Anniversary Time Capsule
+- Friendship Adventure
+- Family Blessing Letter
+- Premium Hindu Wedding / Engagement Card
 
-Run locally:
+## Pricing
+
+- Standard 30 days: ₹79
+- Standard 60 days: ₹149
+- Wedding / Engagement 90 days: ₹449
+
+## New integrations included
+
+### Supabase
+Environment variables are already added to `.env` and `.env.example`:
+
+```env
+VITE_SUPABASE_URL="https://jrwjxwmpwgellfhllzps.supabase.co"
+VITE_SUPABASE_ANON_KEY="sb_publishable_OAW5VGxViMlIAHsTHY_E1Q_CnRUXyCo"
+```
+
+Frontend saves:
+- contact form submissions to `contact_messages`
+- create moment draft to `moment_drafts`
+- checkout lead to `checkout_leads`
+
+Run the SQL in:
+
+```text
+supabase/schema.sql
+```
+
+inside Supabase SQL Editor.
+
+### Email sending
+The contact form uses the EmailJS pattern from your ReadyGO project.
+
+Current defaults:
+
+```env
+VITE_EMAILJS_SERVICE_ID="service_xkxzc4n"
+VITE_EMAILJS_TEMPLATE_ID="template_2m9jcng"
+VITE_EMAILJS_PUBLIC_KEY="vKEy0T4LoYEzfCAeL"
+VITE_SUPPORT_EMAIL="support@createyourmoment.com"
+```
+
+Make sure the EmailJS template sends to `support@createyourmoment.com`.
+
+### Razorpay
+Razorpay is not integrated yet. Checkout page now saves checkout leads and has a "Simulate Payment Success" button. Later connect Razorpay order creation + signature verification from backend/serverless.
+
+## Run
 
 ```bash
 npm install
 npm run dev
 ```
 
-Build test:
+## Build
 
 ```bash
 npm run build
 ```
 
-Important routes:
-
-- `/templates`
-- `/templates/wedding-royal-envelope`
-- `/m/wedding-royal-envelope`
-- `/m/birthday-treasure-box`
-- `/m/love-story-journey`
+Build was tested successfully.
