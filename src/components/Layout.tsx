@@ -1,6 +1,7 @@
 import { Link, NavLink } from "react-router-dom";
 import { Menu, Sparkles, X } from "lucide-react";
 import { useState } from "react";
+import logoIcon from "../assets/favicon-48x48.png";
 
 const links = [
   ["/templates", "Templates"],
@@ -16,7 +17,7 @@ export function Navbar() {
       <div className="container-pad flex h-16 items-center justify-between sm:h-20">
         <Link to="/" className="flex items-center gap-3">
           <img
-            src="/src/assets/favicon-48x48.png"
+            src={logoIcon}
             alt="Create Your Moments logo"
             className="h-9 w-9 rounded-xl"
           />
@@ -108,7 +109,7 @@ export function Footer() {
         <div>
           <div className="flex items-center gap-3">
             <img
-              src="/src/assets/favicon-48x48.png"
+              src={logoIcon}
               alt="Create Your Moments"
               className="h-10 w-10 rounded-xl"
             />

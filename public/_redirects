@@ -1,0 +1,11 @@
+/wp-login.php /404.html 404
+/xmlrpc.php /404.html 404
+/*/wp-includes/* /404.html 404
+/wordpress/* /404.html 404
+/blog/wp-includes/* /404.html 404
+/shop/wp-includes/* /404.html 404
+/test/wp-includes/* /404.html 404
+/site/wp-includes/* /404.html 404
+/2019/wp-includes/* /404.html 404
+
+/* /index.html 200
